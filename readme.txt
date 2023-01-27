@@ -12,7 +12,7 @@ BASEPATH = "http://localhost:{port}/api"
     - register
         path = /register
         method : POST
-        body: { email , password,firstName,lastName,country}
+        body: { email , password,firstName,lastName,country,type}
         reponse : 200 OK {message:""}
     
     
