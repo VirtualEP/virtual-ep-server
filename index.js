@@ -1,7 +1,6 @@
 require('dotenv/config');
 const express = require('express')
 const cors = require('cors')
-const jwt = require('jsonwebtoken');
 const app = express()
 const port = process.env.PORT || 8080
 const connectDatabase = require('./src/database')

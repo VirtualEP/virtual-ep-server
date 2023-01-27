@@ -1,5 +1,8 @@
-function generateAccessToken(data) {
-    return jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
-  }
+const jwt = require('jsonwebtoken');
 
-  module.exports = generateAccessToken;
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.JWT_SECRET, {
+    expiresIn: 604800 // in seconds
+  });
+}
+module.exports = generateAccessToken;

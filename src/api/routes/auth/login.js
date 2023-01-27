@@ -7,12 +7,13 @@ const generateAccessToken = require('../../../util/signJwt');
 
 router.post('/', async (req, res) => {
 
-
     // TODO: get phone number 
     const { email, password } = req.body;
 
+    if (!email || !password) return res.status(404).json({ message: 'Please make sure to price all fileds required' })
+
     // check if user is already registered
-    const userExists = User.findOne({ email: email });
+    const userExists = await User.findOne({ email: email });
 
     if (!userExists) return res.status(403).json({ message: 'Imvalid credentials. please provide a valid email address nad password' })
 
@@ -24,12 +25,11 @@ router.post('/', async (req, res) => {
 
 
     // asssign the user a jwt for future request verification
-
-    const token = generateAccessToken({ _id: userExists._id });
-
+    const token = generateAccessToken({_id: userExists._id});
 
 
-    return res.json({ token: token, message: "Code sent successfully", error: 0 })
+
+    return res.json({ token: token, message: "successfully logged in into your account", error: 0 })
 
 
 
