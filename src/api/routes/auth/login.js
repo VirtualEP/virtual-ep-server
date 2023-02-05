@@ -15,13 +15,19 @@ router.post('/', async (req, res) => {
     // check if user is already registered
     const userExists = await User.findOne({ email: email });
 
-    if (!userExists) return res.status(403).json({ message: 'Imvalid credentials. please provide a valid email address nad password' })
+
+    if (!userExists) return res.status(403).json({ message: 'Invalid credentials. please provide a valid email address nad password' })
 
 
     // time to validate password
-    const isValidPassword = await bcrypt.compare(password, userExists.password);
+    let isValidPassword =false;
+    try {
+         isValidPassword = await bcrypt.compare(password, userExists.password);
+    } catch (error) {
+        sValidPassword =false;
+    }
 
-    if (!isValidPassword) return res.status(403).json({ message: 'Imvalid credentials. please provide a valid email address nad password' })
+    if (!isValidPassword) return res.status(403).json({ message: 'Invalid credentials. please provide a valid email address nad password' })
 
 
     // asssign the user a jwt for future request verification
@@ -29,7 +35,7 @@ router.post('/', async (req, res) => {
 
 
 
-    return res.json({ token: token, message: "successfully logged in into your account", error: 0 })
+    return res.json({ token: token,user:userExists, message: "successfully logged in into your account", error: 0 })
 
 
 
