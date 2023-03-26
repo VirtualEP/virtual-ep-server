@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 
 
 
-    return res.json({ token: token,user:userExists, message: "successfully logged in into your account", error: 0 })
+    return res.json({ token: token,user:{...userExists,password:null}, message: "successfully logged in into your account", error: 0 })
 
 
 
