@@ -2,7 +2,7 @@ const express = require('express');
 const { User } = require('../../../database/models/User');
 const bcrypt = require("bcrypt");
 const router = express.Router();
-
+const generateAccessToken = require('../../../util/signJwt');
 
 
 router.post('/', async (req, res) => {
@@ -33,7 +33,9 @@ router.post('/', async (req, res) => {
         const token = generateAccessToken({ _id: savedUser._id });
 
         if (savedUser) return res.status(200).json({ message: 'Your account has been created sucessfully.login in to continue', user: savedUser, token: token })
+        
     } catch (error) {
+
         return res.status(402).json({ message: 'Something happened please try again latter.' })
     }
 

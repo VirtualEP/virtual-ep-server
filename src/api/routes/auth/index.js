@@ -4,6 +4,7 @@ const loginRoute = require('./login')
 const registerRoute = require('./register')
 const verifyRoute = require('./verification')
 
+router.use(express.json());
 
 router.use('/login',loginRoute)
 router.use('/register',registerRoute)

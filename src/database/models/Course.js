@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+
+
 const CourseSchema = new mongoose.Schema({
 
     title: { type: String, required: true },
@@ -8,19 +10,21 @@ const CourseSchema = new mongoose.Schema({
 
     author: { type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'User' },
 
-    threads: [{ type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Thread' }],
+    threads: [{ type: mongoose.SchemaTypes.ObjectId, required: false, ref: 'Thread' }],
 
-    discription: { type: String, required: true },
+    tag: { type: [String], required: true, default: [] },
+
+    discription: { type: String, required: false },
 
     stars: { type: Number, required: true, default: 1 },
 
+    price: { type: Number, required: true, default: 120.00 },
+
     live: { type: Boolean, default: false, required: true },
 
-    ratinigs: [{ type: Object, required: true }],
+    testimonials: [{ type: Object, required: true,default:[] }],
 
-    lessons: [{ type: String, required: true }],
-
-    students: [{ type: mongoose.SchemaTypes.ObjectId, required: true, ref: "User" }],
+    students: [{ type: mongoose.SchemaTypes.ObjectId, required: true, ref: "User",default:[] }],
 
     approved: { type: Boolean, required: true, default: false },
 

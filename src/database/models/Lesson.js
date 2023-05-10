@@ -10,7 +10,7 @@ const LessonSchema = new mongoose.Schema({
 
     course: { type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Course' },
 
-    notes: [{ type: String, required: true }],
+    notes: [{ type: Object, required: true, default: [] }],
 
     createdAt: { type: Date, default: Date() },
 

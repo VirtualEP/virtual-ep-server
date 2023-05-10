@@ -20,22 +20,22 @@ router.post('/', async (req, res) => {
 
 
     // time to validate password
-    let isValidPassword =false;
+    let isValidPassword = false;
     try {
-         isValidPassword = await bcrypt.compare(password, userExists.password);
+        isValidPassword = await bcrypt.compare(password, userExists.password);
     } catch (error) {
-        sValidPassword =false;
+        isValidPassword = false;
     }
 
     if (!isValidPassword) return res.status(403).json({ message: 'Invalid credentials. please provide a valid email address nad password' })
 
 
     // asssign the user a jwt for future request verification
-    const token = generateAccessToken({_id: userExists._id});
+    const token = generateAccessToken({ _id: userExists._id });
 
 
 
-    return res.json({ token: token,user:{...userExists,password:null}, message: "successfully logged in into your account", error: 0 })
+    return res.json({ token: token, user: { ...userExists._doc, password: null }, message: "successfully logged in into your account", error: 0 })
 
 
 
