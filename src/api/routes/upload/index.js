@@ -17,21 +17,44 @@ router.get('/', async (req, res) => {
 
 router.post('/', upload.single("media"), async (req, res) => {
 
-    const topic = await Topic.findById(req.body.topic)
+    console.log(req.body);
 
-    if (!topic) return res.status(404).json({ message: 'invalid topid id provided' });
+    if ((req.body.topic === '' && req.body.topicId === '') || (req.body.course === '')) {
+        return res.status(404).json({ message: 'invalid topid id provided' });
+    }
+
+
+    let topic = null;
+    let topicUpdated = false;
+
+    if (req.body.topicId !== '') {
+
+        topic = await Topic.findById(req.body.topicId)
+
+        if (!topic) return res.status(404).json({ message: 'invalid topid id provided' });
+    }
+
+    if (req.body.topic !== '' && req.body.topicId === '') {
+        topic = await Topic.create({
+            course: req.body.course,
+            title: req.body.topic,
+        })
+         topicUpdated = true;
+
+    }
+
 
     const media = await Media.create({
         name: req.body.name,
-        topic: req.body.topic,
+        topic: topic._id,
         type: req.body.type,
         src: req.file.filename
     })
 
-    await Topic.findByIdAndUpdate(req.body.topic,{$push: { media : media._id}})
+    await Topic.findByIdAndUpdate(topic._id, { $push: { media: media._id } })
 
 
-    return res.json({ media, message: "created sussefully" })
+    return res.json({ topic: { data: topic, topicUpdated }, media, message: "created sussefully" })
 })
 
 

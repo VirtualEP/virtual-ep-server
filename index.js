@@ -1,19 +1,19 @@
 require('dotenv/config');
-const os = require("os");
 const express = require('express')
 const cors = require('cors')
-const formData = require("express-form-data");
 const connectDatabase = require('./src/database')
 const apiRoute = require('./src/api')
-const fs = require('fs')
+const fs = require('fs');
+const staticAuthenticateToken = require('./src/api/middlewares/staticAuth');
 const port = process.env.PORT || 8080
 const app = express()
 
 app.use(cors())
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true, limit: 100000 }));
 
-app.use('/files', express.static('./files'));
+app.use('/files',[staticAuthenticateToken] ,express.static('./files'));
 
 app.use('/video/:filename', (req, res, next) => {
 

@@ -10,6 +10,7 @@ const UploadPathAction = {
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         let finalDest = "./files"
+        console.log(req.body.action);
 
         if (req.body.action === UploadPathAction.upload_courses_video) {
             finalDest += "/videos"

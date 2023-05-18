@@ -11,9 +11,9 @@ router.get('/', async (req, res) => {
     if (!user) return res.status(404).json({ message: 'user can not be found' })
 
 
-    if (user.accountType == 'leaner') {
+    if (user.accountType == 'learner') {
 
-        const courses = await Course.find({ approved: true, students: { $in: [user._id] } });
+        const courses = await Course.find({ approved: true, students: { $in: user._id } }).populate('author');
 
         return res.json({ enrollments: courses });
     }
