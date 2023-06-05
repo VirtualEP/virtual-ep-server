@@ -1,5 +1,7 @@
 require('dotenv/config');
 const express = require('express')
+const http = require('http');
+const https = require('https');
 const cors = require('cors')
 const connectDatabase = require('./src/database')
 const apiRoute = require('./src/api')
@@ -48,3 +50,15 @@ app.listen(port, () => {
     console.log(`quick-client running on ${port}`);
     connectDatabase().then(() => console.log(`quick-client database connected`)).catch(() => console.log(`quick-client database connection failed`))
 })
+
+
+const httpServer = http.createServer(app);
+
+httpServer.listen(80);
+
+https.createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    passphrase: 'p@ssword'
+}, app)
+.listen(443);
