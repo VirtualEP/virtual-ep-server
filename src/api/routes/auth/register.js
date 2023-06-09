@@ -2,7 +2,8 @@ const express = require('express');
 const { User } = require('../../../database/models/User');
 const bcrypt = require("bcrypt");
 const router = express.Router();
-const generateAccessToken = require('../../../util/signJwt');
+const { default: axios } = require('axios');
+const jwt = require('jsonwebtoken')
 
 router.post('/', async (req, res) => {
   const { firstName, lastName, country, email, password, type } = req.body;
@@ -25,19 +26,30 @@ router.post('/', async (req, res) => {
     // Hash the password
     const securePassword = await bcrypt.hash(password, genSalt);
 
+    const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET);
+    const trustkey = jwt.sign('api.key.token', process.env.SMTP_SECRET);
+
     // Create a new user account
-    const userAccount = new User({ ...req.body, password: securePassword, accountType: type });
+    const userAccount = new User({ ...req.body, password: securePassword, accountType: type, verificationToken });
 
     // Save the user account
-    const savedUser = await userAccount.save();
+    await userAccount.save();
 
-    // Assign the user a JWT for future request verification
-    const token = generateAccessToken({ _id: savedUser._id });
+    // Send verification email
+   await axios.get(process.env.SMTP_SERVER + `/verification?email=${email}&&user=${firstName + lastName}&&pubKey=${verificationToken}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${trustkey}`
+        },
+      }
+    )
+    return res.status(200).json({ message: 'Your account has been created successfully. Please verify your email to continue.' });
 
-    return res.status(200).json({ message: 'Your account has been created successfully. Log in to continue', user: savedUser, token: token });
 
   } catch (error) {
-    console.log(error);
+    await User.findOneAndDelete({ email })
+    console.log(error.message);
     return res.status(402).json({ message: 'Something happened, please try again later.' });
   }
 });

@@ -12,7 +12,11 @@ const UserSchema = new mongoose.Schema({
 
     enrollment: { type: [String], required: true, default: [] },
 
+    verificationToken: { type: String, required: true },
+
     email: { type: String, required: true },
+
+    isVerified: { type: Boolean, required: true, default: false },
 
     password: { type: String, required: true },
 

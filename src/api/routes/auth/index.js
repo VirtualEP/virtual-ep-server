@@ -6,8 +6,8 @@ const verifyRoute = require('./verification')
 
 router.use(express.json());
 
-router.use('/login',loginRoute)
-router.use('/register',registerRoute)
-router.use('/verify',verifyRoute)
+router.use('/login', loginRoute)
+router.use('/register', registerRoute)
+router.use('/verify', verifyRoute)
 
 module.exports = router;
