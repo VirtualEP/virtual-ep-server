@@ -1,16 +1,25 @@
 const mongoose = require('mongoose');
 
+const securitySchema = new mongoose.Schema({
+    emailFa: { type: Boolean, require: true, default: false },
+    phoneFa: { type: Boolean, require: true, default: false },
+})
+
 const UserSchema = new mongoose.Schema({
 
     firstName: { type: String, required: true },
 
     lastName: { type: String, required: true },
 
+    phoneNumber: { type: String, required: false },
+
     balance: { type: Number, required: true, default: 0 },
 
     country: { type: String, required: true },
 
     enrollment: { type: [String], required: true, default: [] },
+
+    securityOption: { type: securitySchema, required: false },
 
     verificationToken: { type: String, required: true },
 
