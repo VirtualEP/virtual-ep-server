@@ -24,7 +24,7 @@ app.use('/video/:filename', (req, res, next) => {
         return res.status(400).send("Requires Range header");
     }
 
-    const videoPath = "./files/videos/" + req.params.filename;
+    const videoPath = "./files/" + req.params.filename;
 
     const videoSize = fs.statSync(videoPath).size;
     const CHUNK_SIZE = 10 ** 6;
