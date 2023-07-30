@@ -11,6 +11,8 @@ const MediaSchema = new mongoose.Schema({
 
     length: { type: Number, required: false },
 
+    size: { type: Number, required: false },
+
     topic: { type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Topic' },
 
     notes: [{ type: Object, required: true, default: [] }],

@@ -71,7 +71,7 @@ router.get('/top-selling', async (req, res) => {
 
 router.get('/:courseId/enrolled', async (req, res) => {
 
-  const course = await Course.findOne({ approved: true }).populate('students');
+  const course = await Course.findOne({ _id: req.params.courseId, approved: true }).populate('students');
 
   return res.json({ course })
 })

@@ -23,7 +23,6 @@ router.post('/', upload.single("media"), async (req, res) => {
         return res.status(404).json({ message: 'invalid topid id provided' });
     }
 
-
     let topic = null;
     let topicUpdated = false;
 
@@ -40,15 +39,14 @@ router.post('/', upload.single("media"), async (req, res) => {
             title: req.body.topic,
         })
          topicUpdated = true;
-
     }
-
 
     const media = await Media.create({
         name: req.body.name,
         topic: topic._id,
         type: req.body.type,
-        src: req.file.filename
+        src: req.file.filename,
+        size: req.file.size
     })
 
     await Topic.findByIdAndUpdate(topic._id, { $push: { media: media._id } })
