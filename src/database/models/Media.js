@@ -9,6 +9,8 @@ const MediaSchema = new mongoose.Schema({
 
     src: { type: String, required: true },
 
+    processing: { type: Boolean, required: true, default: true },
+
     length: { type: Number, required: false },
 
     size: { type: Number, required: false },

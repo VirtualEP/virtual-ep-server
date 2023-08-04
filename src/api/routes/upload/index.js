@@ -5,6 +5,8 @@ const { User } = require('../../../database/models/User');
 const { upload } = require('../../../util/upload');
 const { Media } = require('../../../database/models/Media');
 const router = express.Router();
+const {Worker} = require('job-flow')
+
 
 router.get('/', async (req, res) => {
 
@@ -38,7 +40,7 @@ router.post('/', upload.single("media"), async (req, res) => {
             course: req.body.course,
             title: req.body.topic,
         })
-         topicUpdated = true;
+        topicUpdated = true;
     }
 
     const media = await Media.create({
@@ -51,8 +53,16 @@ router.post('/', upload.single("media"), async (req, res) => {
 
     await Topic.findByIdAndUpdate(topic._id, { $push: { media: media._id } })
 
+    const worker = new Worker()
+
+    const isQueued = await worker.addJobToQueue({filePath: req.file.filename});
+
+    console.log("worker queued ?",isQueued)
 
     return res.json({ topic: { data: topic, topicUpdated }, media, message: "created sussefully" })
+
+
+
 })
 
 
