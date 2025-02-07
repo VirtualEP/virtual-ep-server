@@ -6,7 +6,7 @@ const cachedJobQueue = './videoQueue.json';
 const jobQueue = new JobQueue(cachedJobQueue)
 
 async function videoTranscode(job) {
-    console.log(job.data.filePath);
+  console.log(job.data.filePath);
   const inputFilePath = "./../files/"+job.data.filePath;
   const outputFilePath = "./../files/web/"+job.data.filePath.replace(/\.\w+$/, '.mp4');
 
